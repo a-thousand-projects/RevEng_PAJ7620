@@ -424,35 +424,35 @@ const unsigned short setProxinityModeRegisterArray[] PROGMEM = {
   #else
   const unsigned short setProximityModeRegisterArray[]={
     #endif
-  {0xEF00},   // Select Bank 0
-  {0x4100}, // R_Int_1_En - Interrupt enable mask - Should be 00 (disable gestures)
-  {0x4202}, // R_Int_2_En - Set Interrupt for Poximity Mode
-  {0x4820}, // R_AE_Exposure_UB (low byte)
-  {0x4900}, // R_AE_Exposure_UB (high byte)
-  {0x5113}, // R_Manual_GG 
-  {0x8300}, // R_LightThd
-  {0x9FF8},
-  {0x6996},
-  {0x6A02},
-  {0xEF01},
-  {0x011E},
-  {0x020F},
-  {0x0310},
-  {0x0402},  
-  {0x4150},
-  {0x4334},
-  {0x65CE},
-  {0x660B},
-  {0x67CE},
-  {0x680B},
-  {0x69E9},
-  {0x6A05},
-  {0x6B50},
-  {0x6CC3},
-  {0x6D50},
-  {0x6EC3},
-  {0x7405},
-};
+  0xEF00,   // Select Bank 0
+  0x4100, // R_Int_1_En - Interrupt enable mask - Should be 00 (disable gestures)
+  0x4202, // R_Int_2_En - Set Interrupt for Poximity Mode
+  0x4820, // R_AE_Exposure_UB (low byte)
+  0x4900, // R_AE_Exposure_UB (high byte)
+  0x5113, // R_Manual_GG 
+  0x8300, // R_LightThd
+  0x9FF8,
+  0x6996,
+  0x6A02,
+  0xEF01,
+  0x011E,
+  0x020F,
+  0x0310,
+  0x0402,  
+  0x4150,
+  0x4334,
+  0x65CE,
+  0x660B,
+  0x67CE,
+  0x680B,
+  0x69E9,
+  0x6A05,
+  0x6B50,
+  0x6CC3,
+  0x6D50,
+  0x6EC3,
+  0x7405
+  };
 
 /**
  * Gesture mode specific register addresses and values
@@ -460,7 +460,7 @@ const unsigned short setProxinityModeRegisterArray[] PROGMEM = {
  * \note Values taken from PixArt reference documentation v0.8 & v1.0 - see <a href="https://github.com/acrandal/RevEng_PAJ7620/wiki">wiki</a> for files
  */
 #ifdef PROGMEM_COMPATIBLE
-const unsigned short setGestureModeRegisterArray[] PROGMEM = {
+const unsigned short setGestureModeRegisterArray[] PROGMEM = 
 #else
 const unsigned short setGestureModeRegisterArray[] = {
 #endif
