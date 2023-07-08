@@ -336,6 +336,13 @@ typedef enum {
 /** Generated size of the register init array */
 #define INIT_REG_ARRAY_SIZE (sizeof(initRegisterArray)/sizeof(initRegisterArray[0]))
 
+
+
+
+
+
+
+
 /**
  * Initial device register addresses and values.
  * \note Puts device into gesture mode with various "normal" mode values.
@@ -406,6 +413,46 @@ const unsigned short initRegisterArray[] = {
 
 /** Generated size of the register set gesture mode array */
 #define SET_GES_MODE_REG_ARRAY_SIZE (sizeof(setGestureModeRegisterArray)/sizeof(setGestureModeRegisterArray[0]))
+
+/**
+ * @brief Proximity mode Rgister array
+ * 
+ */
+
+#ifdef PROGMEM_COMPATIBLE
+const unsigned short setProxinityModeRegisterArray[] PROGMEM = {
+  #else
+  const unsigned short setProximityModeRegisterArray[]={
+    #endif
+  {0xEF00},   // Select Bank 0
+  {0x4100}, // R_Int_1_En - Interrupt enable mask - Should be 00 (disable gestures)
+  {0x4202}, // R_Int_2_En - Set Interrupt for Poximity Mode
+  {0x4820}, // R_AE_Exposure_UB (low byte)
+  {0x4900}, // R_AE_Exposure_UB (high byte)
+  {0x5113}, // R_Manual_GG 
+  {0x8300}, // R_LightThd
+  {0x9FF8},
+  {0x6996},
+  {0x6A02},
+  {0xEF01},
+  {0x011E},
+  {0x020F},
+  {0x0310},
+  {0x0402},  
+  {0x4150},
+  {0x4334},
+  {0x65CE},
+  {0x660B},
+  {0x67CE},
+  {0x680B},
+  {0x69E9},
+  {0x6A05},
+  {0x6B50},
+  {0x6CC3},
+  {0x6D50},
+  {0x6EC3},
+  {0x7405},
+};
 
 /**
  * Gesture mode specific register addresses and values
