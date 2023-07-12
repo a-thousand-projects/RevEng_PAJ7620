@@ -333,16 +333,43 @@ typedef enum {
 #define CORNERS_BUFFER_UPPER  (int)(GESTURE_RANGE_MID + (CORNERS_BUFFER_WIDTH / 2))
 
 
+/**
+ * @brief Suspend reguister Array
+ * 
+ */
+
+/** Generated size of the register init array */
+#define SUSPEND_ARRAY_SIZE (sizeof(suspendArray)/sizeof(suspendArray[0]))
+#ifdef PROGMEM_COMPATIBLE
+const unsigned short suspendArray[] PROGMEM = {
+#else
+const unsigned short initRegisterArray[] = {
+#endif
+0xEF01,
+0x7200,
+0xEF00,
+0x0301
+};
+
+/**
+ * @brief Resume register Array
+ * 
+ */
+
+/** Generated size of the register init array */
+#define RESUME_ARRAY_SIZE (sizeof(resumeArray)/sizeof(resumeArray[0]))
+#ifdef PROGMEM_COMPATIBLE
+const unsigned short resumeArray[] PROGMEM = {
+#else
+const unsigned short initRegisterArray[] = {
+#endif
+0xEF01,
+0x7201
+};
+
+
 /** Generated size of the register init array */
 #define INIT_REG_ARRAY_SIZE (sizeof(initRegisterArray)/sizeof(initRegisterArray[0]))
-
-
-
-
-
-
-
-
 /**
  * Initial device register addresses and values.
  * \note Puts device into gesture mode with various "normal" mode values.
@@ -411,8 +438,7 @@ const unsigned short initRegisterArray[] = {
 };
 
 
-/** Generated size of the register set gesture mode array */
-#define SET_GES_MODE_REG_ARRAY_SIZE (sizeof(setGestureModeRegisterArray)/sizeof(setGestureModeRegisterArray[0]))
+#define SET_CURSOR_MODE_REG_ARRAY_SIZE (sizeof(setProxinityModeRegisterArray)/sizeof(setProxinityModeRegisterArray[0]))
 
 /**
  * @brief Proximity mode Rgister array
@@ -431,7 +457,7 @@ const unsigned short setProxinityModeRegisterArray[] PROGMEM = {
   0x4900, // R_AE_Exposure_UB (high byte)
   0x5113, // R_Manual_GG 
   0x8300, // R_LightThd
-  0x9FF8,
+  0x9FF8, 
   0x6996,
   0x6A02,
   0xEF01,
@@ -454,13 +480,18 @@ const unsigned short setProxinityModeRegisterArray[] PROGMEM = {
   0x7405
   };
 
+
+
+/** Generated size of the register set gesture mode array */
+#define SET_GES_MODE_REG_ARRAY_SIZE (sizeof(setGestureModeRegisterArray)/sizeof(setGestureModeRegisterArray[0]))
+
 /**
  * Gesture mode specific register addresses and values
  * \note Puts device into gesture mode with appropriate values.
  * \note Values taken from PixArt reference documentation v0.8 & v1.0 - see <a href="https://github.com/acrandal/RevEng_PAJ7620/wiki">wiki</a> for files
  */
 #ifdef PROGMEM_COMPATIBLE
-const unsigned short setGestureModeRegisterArray[] PROGMEM = 
+const unsigned short setGestureModeRegisterArray[] PROGMEM = {
 #else
 const unsigned short setGestureModeRegisterArray[] = {
 #endif
@@ -496,8 +527,7 @@ const unsigned short setGestureModeRegisterArray[] = {
 };
 
 
-/** Generated size of the register set cursor mode array */
-#define SET_CURSOR_MODE_REG_ARRAY_SIZE (sizeof(setCursorModeRegisterArray)/sizeof(setCursorModeRegisterArray[0]))
+
 
 /**
  * Cursor mode specific register addresses and values
@@ -559,10 +589,14 @@ class RevEng_PAJ7620
     void disable();                 // Suspend interrupts (both pin and registers)
     void enable();                  // Resume interrupts (both pin and registers)
 
+    void suspend();
+    void resume();
+
     /** @name Setting sensor mode interface */
     /**@{*/
     void setGestureMode();          // Put sensor into gesture mode
     void setCursorMode();           // Put sensor into cursor mode
+    void setProximityMode();        // Put sensor into Prpximity mode
     /**@}*/
 
     void invertXAxis();             // Invert (toggle) sensor's X (vertical) axis
@@ -611,8 +645,12 @@ class RevEng_PAJ7620
 
     /** @name Proxmity mode interface */
     /**@{*/
-    //int getProximityDistance();     // Read an object's "proximity 255..0"
+    int getProximityDistance();     // Read an object's "proximity 255..0"
     /**@}*/
+
+    uint8_t writeRegister(uint8_t i2cAddress, uint8_t dataByte);
+    uint8_t readRegister(uint8_t i2cAddress, uint8_t byteCount, uint8_t data[]);
+    void selectRegisterBank(Bank_e bank);
 
   private:
     unsigned long gestureEntryTime; // User set gesture entry delay in ms (default: 0)
@@ -620,10 +658,7 @@ class RevEng_PAJ7620
 
     TwoWire *wireHandle;            // User selected Wire bus (default: Wire)
 
-    uint8_t writeRegister(uint8_t i2cAddress, uint8_t dataByte);
-    uint8_t readRegister(uint8_t i2cAddress, uint8_t byteCount, uint8_t data[]);
-
-    void selectRegisterBank(Bank_e bank);
+    
 
     uint8_t getGesturesReg0(uint8_t data[]);
     uint8_t getGesturesReg1(uint8_t data[]);

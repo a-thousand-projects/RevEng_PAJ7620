@@ -198,6 +198,23 @@ void RevEng_PAJ7620::selectRegisterBank(Bank_e bank)
     { writeRegister(PAJ7620_REGISTER_BANK_SEL, PAJ7620_BANK1); }
 }
 
+/**
+ * @brief Suspend the gesture device
+ * 
+ */
+void RevEng_PAJ7620::suspend()
+{
+  writeRegisterArray(suspendArray,SUSPEND_ARRAY_SIZE);
+}
+
+/**
+ * @brief Resume the gesture device
+ * 
+ */
+void RevEng_PAJ7620::resume()
+{
+  writeRegisterArray(resumeArray,RESUME_ARRAY_SIZE);
+}
 
 /**
  * Reads device memory to check for the PAJ7620 hardware identifier (ID)
@@ -229,6 +246,15 @@ bool RevEng_PAJ7620::isPAJ7620UDevice()
   return true;
 }
 
+/**
+ * @brief Get Proximity Distance
+ * 
+ * @return int 
+ */
+int RevEng_PAJ7620::getProximityDistance()
+{
+  return 0;
+}  
 
 /**
  * Writes an array of values to the device memory
@@ -309,6 +335,15 @@ void RevEng_PAJ7620::setCursorMode()
   writeRegisterArray(setCursorModeRegisterArray, SET_CURSOR_MODE_REG_ARRAY_SIZE);
 }
 
+
+ /**
+  * @brief Set the Proximity Mode object
+  * 
+  */
+ void RevEng_PAJ7620::setProximityMode()
+ {
+  writeRegisterArray(setProxinityModeRegisterArray, SET_CURSOR_MODE_REG_ARRAY_SIZE);
+ }
 
 /**
  * Gets cursor object's current X location
